@@ -1,6 +1,5 @@
 import intervalToDuration from "date-fns/intervalToDuration";
-import { useEffect, useState } from "react";
-import { useCountdown } from "usehooks-ts";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * @todo change state if countdown has expired
@@ -18,7 +17,7 @@ export async function getServerSideProps() {
 /* eslint-disable react/no-children-prop */
 export default function Home({ countdown }) {
   return (
-    <main className="min-h-screen grid grid-cols-3 grid-rows-3 items-center justify-center">
+    <main className="grid grid-cols-3 grid-rows-3 h-full items-center justify-center">
       <div className="grid items-center px-10 lg:px-20 h-full bg-base-200 col-span-3 md:col-span-2">
         <LineUp />
       </div>
@@ -37,31 +36,49 @@ export default function Home({ countdown }) {
  * *********************** sections ***********************
  */
 
+const useInterval = (callback) => {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    let id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+};
+
 function Countdown({ days: startDays, hours: startHours, minutes: startMinutes, seconds: startSeconds }) {
   const [days, setDays] = useState(startDays);
   const [hours, setHours] = useState(startHours);
   const [minutes, setMinutes] = useState(startMinutes);
-  const [seconds, { startCountdown, resetCountdown }] = useCountdown({ countStart: minutes === startMinutes ? startSeconds : 60, intervalMs: 1000 });
+  const [seconds, setSeconds] = useState(startSeconds);
 
-  // start the countdown on page load
-  useEffect(() => startCountdown(), []);
+  useEffect(() => setSeconds((s) => s - 1), []);
 
   // countdown logic
-  useEffect(() => {
-    if (seconds === 0) {
-      if (minutes === 0) {
-      } else setMinutes(minutes - 1);
-      if (hours === 0) {
-      } else setHours(hours - 1);
-      if (days === 0) {
-      } else setDays(days - 1);
-      resetCountdown();
-      startCountdown();
+  useInterval(() => {
+    if (seconds > 0) setSeconds((s) => s - 1);
+    else {
+      // decrement minutes
+      if (minutes > 0) setMinutes((m) => m - 1);
+      else {
+        //decrement hours
+        if (minutes > 0) setHours((h) => h - 1);
+        else {
+          if (days > 0) setDays((d) => d - 1);
+          setHours(23);
+        }
+        setMinutes(59);
+      }
+      // reset hours
+      setSeconds(59);
     }
-  }, [seconds, resetCountdown, startCountdown, minutes, hours, days]);
-
-  // wa
-  useEffect(() => {});
+  });
 
   return (
     <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
@@ -86,17 +103,14 @@ function CountDownValue({ label, value }) {
 
 function LineUp() {
   return (
-    <div className="space-y-6 lg:space-y-12">
+    <div className="space-y-6 lg:space-y-10">
       <h1 className="text-2xl lg:text-5xl">Lineup</h1>
-      <ul className="ml-4 text-sm lg:text-lg space-y-4">
+      <ul className="text-sm lg:text-md space-y-4">
         <li>
-          <i className="text-accent">[Artist]</i> dj4base
+          <a href="https://soundcloud.com/user-81326424">4base</a>
         </li>
         <li>
-          <i className="text-accent">[Artist]</i> Zucce
-        </li>
-        <li>
-          <i className="text-accent">[Artist]</i> ...
+          <a href="https://soundcloud.com/sucke">Suzu</a>
         </li>
       </ul>
     </div>
@@ -106,13 +120,13 @@ function LineUp() {
 function Info() {
   return (
     <div className="space-y-6 lg:space-y-12">
-      <h1 className="text-2xl lg:text-5xl">Infos</h1>
-      <ul className="ml-4 text-sm lg:text-lg space-y-4">
+      <h1 className="text-2xl lg:text-5xl">Info</h1>
+      <ul className="text-sm lg:text-md space-y-4">
         <li>
-          Saag 10, Techelsberg <i className="text-accent">[Locaiton]</i>
+          <a href="">Saag 10, Techelsberg</a>
         </li>
         <li>
-          07 December, 2022 <i className="text-accent">[Date]</i>
+          <a href="">07 December, 2022</a>
         </li>
       </ul>
     </div>
