@@ -37,6 +37,7 @@
 
   body {
     height: 100vh;
+    @apply dark:text-white;
   }
 
   img,
@@ -48,6 +49,6 @@
   }
 
   a {
-    @apply transition-all hover:text-primary-focus;
+    @apply transition-all hover:text-accent;
   }
 }

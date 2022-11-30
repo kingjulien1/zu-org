@@ -1,5 +1,5 @@
 import intervalToDuration from "date-fns/intervalToDuration";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 
 /**
  * @todo change state if countdown has expired
@@ -20,6 +20,13 @@ const ImageContext = createContext();
 export default function Home({ countdown }) {
   return (
     <main className="w-full bg-base-100 bg-opacity-70 transition-all grid grid-cols-3 grid-rows-3 h-full items-center justify-center backdrop-blur-xl">
+      <iframe
+        scrolling="no"
+        frameborder="no"
+        allow="autoplay"
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1139168380&color=%2322827f&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+        className="absolute h-screen w-screen -z-10 opacity-20"
+      ></iframe>
       <img alt="zu!org" src="zuorg.jpg" className="absolute h-10 top-10 -right-14 rotate-45" />
       <div className="grid items-center px-10 lg:px-20 h-full bg-base-300 col-span-3 md:col-span-2">
         <LineUp />
@@ -110,10 +117,14 @@ function LineUp() {
       <h1 className="text-2xl lg:text-5xl">Lineup</h1>
       <ul className="text-sm lg:text-lg space-y-4">
         <li>
-          <a href="https://soundcloud.com/user-81326424">4base</a>
+          <a target="_blank" href="https://soundcloud.com/user-81326424" rel="noreferrer">
+            4base
+          </a>
         </li>
         <li>
-          <a href="https://soundcloud.com/sucke">Suzu</a>
+          <a target="_blank" href="https://soundcloud.com/sucke" rel="noreferrer">
+            Suzu
+          </a>
         </li>
       </ul>
     </div>
@@ -124,12 +135,16 @@ function Info() {
   return (
     <div className="space-y-6 lg:space-y-12">
       <h1 className="text-2xl lg:text-5xl">Info</h1>
-      <ul className="text-sm lg:text-md space-y-4">
+      <ul className="text-sm lg:text-lg space-y-4">
         <li>
-          <a href="">Saag 10, Techelsberg</a>
+          <a target="_blank" href="">
+            Saag 10, Techelsberg
+          </a>
         </li>
         <li>
-          <a href="">07 December, 2022</a>
+          <a target="_blank" href="">
+            07 December, 2022
+          </a>
         </li>
       </ul>
     </div>
