@@ -1,5 +1,5 @@
 import intervalToDuration from "date-fns/intervalToDuration";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 /**
  * @todo change state if countdown has expired
@@ -14,18 +14,21 @@ export async function getServerSideProps() {
   };
 }
 
+const ImageContext = createContext();
+
 /* eslint-disable react/no-children-prop */
 export default function Home({ countdown }) {
   return (
-    <main className="grid grid-cols-3 grid-rows-3 h-full items-center justify-center">
-      <div className="grid items-center px-10 lg:px-20 h-full bg-base-200 col-span-3 md:col-span-2">
+    <main className="w-full bg-base-100 bg-opacity-70 transition-all grid grid-cols-3 grid-rows-3 h-full items-center justify-center backdrop-blur-xl">
+      <img alt="zu!org" src="zuorg.jpg" className="absolute h-10 top-10 -right-14 rotate-45" />
+      <div className="grid items-center px-10 lg:px-20 h-full bg-base-300 col-span-3 md:col-span-2">
         <LineUp />
       </div>
       <div className="grid items-center justify-center col-span-3 row-span-1">
         <Countdown {...countdown} />
       </div>
       <div className="hidden md:block" />
-      <div className="grid items-center text-right px-10 lg:px-20 h-full bg-base-200 col-span-3 md:col-span-2">
+      <div className="grid items-center text-right px-10 lg:px-20 h-full bg-base-300 col-span-3 md:col-span-2">
         <Info />
       </div>
     </main>
@@ -93,7 +96,7 @@ function Countdown({ days: startDays, hours: startHours, minutes: startMinutes, 
 function CountDownValue({ label, value }) {
   return (
     <div className="flex flex-col">
-      <span className="countdown font-mono text-5xl md:text-6xl lg:text-7xl xl:text-9xl">
+      <span className="countdown font-mono text-5xl md:text-6xl lg:text-7xl xl:text-7xl">
         <span style={{ "--value": value }}></span>
       </span>
       {label}
@@ -103,9 +106,9 @@ function CountDownValue({ label, value }) {
 
 function LineUp() {
   return (
-    <div className="space-y-6 lg:space-y-10">
+    <div className="space-y-6 lg:space-y-10 group">
       <h1 className="text-2xl lg:text-5xl">Lineup</h1>
-      <ul className="text-sm lg:text-md space-y-4">
+      <ul className="text-sm lg:text-lg space-y-4">
         <li>
           <a href="https://soundcloud.com/user-81326424">4base</a>
         </li>
