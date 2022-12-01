@@ -1,5 +1,6 @@
 import intervalToDuration from "date-fns/intervalToDuration";
 import { createContext, useEffect, useRef, useState } from "react";
+import { Transition } from "@headlessui/react";
 
 /**
  * @todo change state if countdown has expired
@@ -19,17 +20,12 @@ const ImageContext = createContext();
 /* eslint-disable react/no-children-prop */
 export default function Home({ countdown }) {
   return (
-    <main className="w-full bg-base-100 bg-opacity-70 transition-all grid grid-cols-3 grid-rows-3 h-full items-center justify-center backdrop-blur-xl">
-      <iframe
-        scrolling="no"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1139168380&color=%2322827f&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-        className="absolute h-screen w-screen -z-10 opacity-20"
-      ></iframe>
-      <img alt="zu!org" src="zuorg.jpg" className="absolute h-10 top-10 -right-14 rotate-45" />
+    <main className="w-full bg-base-100 bg-opacity-70 transition-all grid grid-cols-3 grid-rows-3 h-full items-center justify-center backdrop-blur-xl overflow-hidden">
+      <img alt="zu!org" src="zuorg.jpg" className="fixed h-10 top-10 -right-14 rotate-45 overflow-hidden" />
       <div className="grid items-center px-10 lg:px-20 h-full bg-base-300 col-span-3 md:col-span-2">
-        <LineUp />
+        <Transition appear show enter="transition-opacity duration-75" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-150" leaveFrom="opacity-100" leaveTo="opacity-0">
+          <LineUp />
+        </Transition>
       </div>
       <div className="grid items-center justify-center col-span-3 row-span-1">
         <Countdown {...countdown} />
